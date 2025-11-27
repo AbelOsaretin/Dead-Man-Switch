@@ -1,33 +1,39 @@
-"use client"
+"use client";
 
-import { useState } from "react"
-import { HeartHandshake, Settings, Clock, Zap, CheckCircle2 } from "lucide-react"
-import { Button } from "@/components/ui/button"
-import { Card } from "@/components/ui/card"
-import ConfigPanel from "@/components/config-panel"
-import PingButton from "@/components/ping-button"
-import CountdownTimer from "@/components/countdown-timer"
-import PingHistory from "@/components/ping-history"
+import { useState } from "react";
+import {
+  HeartHandshake,
+  Settings,
+  Clock,
+  Zap,
+  CheckCircle2,
+} from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { Card } from "@/components/ui/card";
+import ConfigPanel from "@/components/config-panel";
+import PingButton from "@/components/ping-button";
+import CountdownTimer from "@/components/countdown-timer";
+import PingHistory from "@/components/ping-history";
 
 export default function DeadMansSwitchPage() {
-  const [showConfig, setShowConfig] = useState(false)
-  const [timeoutPeriod, setTimeoutPeriod] = useState(7776000) // 90 days in seconds
-  const [beneficiary, setBeneficiary] = useState("0x...")
-  const [lastPing, setLastPing] = useState(new Date())
-  const [pingHistory, setPingHistory] = useState<Date[]>([])
-  const [funds, setFunds] = useState("2.5")
+  const [showConfig, setShowConfig] = useState(false);
+  const [timeoutPeriod, setTimeoutPeriod] = useState(7776000); // 90 days in seconds
+  const [beneficiary, setBeneficiary] = useState("0x...");
+  const [lastPing, setLastPing] = useState(new Date());
+  const [pingHistory, setPingHistory] = useState<Date[]>([]);
+  const [funds, setFunds] = useState("2.5");
 
   const handlePing = () => {
-    const newPing = new Date()
-    setLastPing(newPing)
-    setPingHistory([newPing, ...pingHistory.slice(0, 9)])
-  }
+    const newPing = new Date();
+    setLastPing(newPing);
+    setPingHistory([newPing, ...pingHistory.slice(0, 9)]);
+  };
 
   const handleConfigSave = (period: number, address: string) => {
-    setTimeoutPeriod(period)
-    setBeneficiary(address)
-    setShowConfig(false)
-  }
+    setTimeoutPeriod(period);
+    setBeneficiary(address);
+    setShowConfig(false);
+  };
 
   return (
     <main className="min-h-screen bg-gradient-to-b from-background via-background to-slate-950/50">
@@ -40,14 +46,26 @@ export default function DeadMansSwitchPage() {
                 <HeartHandshake className="w-6 h-6 text-white" />
               </div>
               <div>
-                <h1 className="text-2xl font-bold text-foreground">Dead Man's Switch</h1>
-                <p className="text-sm text-muted-foreground">Automated Estate Protection</p>
+                <h1 className="text-2xl font-bold text-foreground">
+                  Dead Man's Switch
+                </h1>
+                <p className="text-sm text-muted-foreground">
+                  Automated Estate Protection
+                </p>
               </div>
             </div>
-            <Button onClick={() => setShowConfig(!showConfig)} variant="outline" size="sm" className="gap-2">
-              <Settings className="w-4 h-4" />
-              Settings
-            </Button>
+            <div className="flex items-center gap-4">
+              <Button
+                onClick={() => setShowConfig(!showConfig)}
+                variant="outline"
+                size="sm"
+                className="gap-2"
+              >
+                <Settings className="w-4 h-4" />
+                Settings
+              </Button>
+              <appkit-button />
+            </div>
           </div>
         </div>
       </header>
@@ -65,27 +83,46 @@ export default function DeadMansSwitchPage() {
                     <CheckCircle2 className="w-4 h-4" />
                     Contract Status
                   </h2>
-                  <p className="text-xs text-muted-foreground">Your funds are secure</p>
+                  <p className="text-xs text-muted-foreground">
+                    Your funds are secure
+                  </p>
                 </div>
                 <div className="text-right">
-                  <p className="text-2xl font-bold text-foreground">{funds} ETH</p>
-                  <p className="text-xs text-muted-foreground">Total Deposited</p>
+                  <p className="text-2xl font-bold text-foreground">
+                    {funds} ETH
+                  </p>
+                  <p className="text-xs text-muted-foreground">
+                    Total Deposited
+                  </p>
                 </div>
               </div>
               <div className="grid grid-cols-2 gap-4">
                 <div className="p-3 bg-slate-800/50 rounded-lg border border-slate-700/50">
-                  <p className="text-xs text-muted-foreground mb-1">Last Check-in</p>
-                  <p className="text-sm font-semibold text-foreground">{lastPing.toLocaleDateString()}</p>
+                  <p className="text-xs text-muted-foreground mb-1">
+                    Last Check-in
+                  </p>
+                  <p className="text-sm font-semibold text-foreground">
+                    {lastPing.toLocaleDateString()}
+                  </p>
                   <p className="text-xs text-muted-foreground mt-1">
-                    {lastPing.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })}
+                    {lastPing.toLocaleTimeString([], {
+                      hour: "2-digit",
+                      minute: "2-digit",
+                    })}
                   </p>
                 </div>
                 <div className="p-3 bg-slate-800/50 rounded-lg border border-slate-700/50">
-                  <p className="text-xs text-muted-foreground mb-1">Next Deadline</p>
-                  <p className="text-sm font-semibold text-cyan-400">
-                    {new Date(lastPing.getTime() + timeoutPeriod * 1000).toLocaleDateString()}
+                  <p className="text-xs text-muted-foreground mb-1">
+                    Next Deadline
                   </p>
-                  <p className="text-xs text-emerald-400/70 mt-1">90 days away</p>
+                  <p className="text-sm font-semibold text-cyan-400">
+                    {new Date(
+                      lastPing.getTime() + timeoutPeriod * 1000
+                    ).toLocaleDateString()}
+                  </p>
+                  <p className="text-xs text-emerald-400/70 mt-1">
+                    90 days away
+                  </p>
                 </div>
               </div>
             </Card>
@@ -93,9 +130,12 @@ export default function DeadMansSwitchPage() {
             {/* Main Ping Section */}
             <div className="space-y-4">
               <div className="text-center space-y-2 mb-6">
-                <h2 className="text-3xl font-bold text-foreground">I'm Still Here</h2>
+                <h2 className="text-3xl font-bold text-foreground">
+                  I'm Still Here
+                </h2>
                 <p className="text-muted-foreground">
-                  Confirm your wellbeing and reset the timer. Your beneficiary will be notified if you don't check in.
+                  Confirm your wellbeing and reset the timer. Your beneficiary
+                  will be notified if you don't check in.
                 </p>
               </div>
 
@@ -103,7 +143,10 @@ export default function DeadMansSwitchPage() {
               <PingButton onPing={handlePing} />
 
               {/* Countdown */}
-              <CountdownTimer lastPing={lastPing} timeoutPeriod={timeoutPeriod} />
+              <CountdownTimer
+                lastPing={lastPing}
+                timeoutPeriod={timeoutPeriod}
+              />
             </div>
 
             {/* Info Cards */}
@@ -114,9 +157,12 @@ export default function DeadMansSwitchPage() {
                     <Zap className="w-4 h-4 text-blue-400" />
                   </div>
                   <div>
-                    <h3 className="font-semibold text-sm text-foreground">How It Works</h3>
+                    <h3 className="font-semibold text-sm text-foreground">
+                      How It Works
+                    </h3>
                     <p className="text-xs text-muted-foreground mt-1">
-                      Check in regularly to confirm you're alive. If you miss a deadline, funds transfer automatically.
+                      Check in regularly to confirm you're alive. If you miss a
+                      deadline, funds transfer automatically.
                     </p>
                   </div>
                 </div>
@@ -127,9 +173,12 @@ export default function DeadMansSwitchPage() {
                     <Clock className="w-4 h-4 text-emerald-400" />
                   </div>
                   <div>
-                    <h3 className="font-semibold text-sm text-foreground">Security</h3>
+                    <h3 className="font-semibold text-sm text-foreground">
+                      Security
+                    </h3>
                     <p className="text-xs text-muted-foreground mt-1">
-                      Powered by smart contracts. No middlemen. Always in your control.
+                      Powered by smart contracts. No middlemen. Always in your
+                      control.
                     </p>
                   </div>
                 </div>
@@ -154,19 +203,33 @@ export default function DeadMansSwitchPage() {
 
             {/* Quick Stats */}
             <Card className="bg-gradient-to-br from-slate-900/50 to-slate-900/30 border-slate-800/50 p-4">
-              <h3 className="font-semibold text-sm text-foreground mb-3">Quick Stats</h3>
+              <h3 className="font-semibold text-sm text-foreground mb-3">
+                Quick Stats
+              </h3>
               <div className="space-y-3">
                 <div>
-                  <p className="text-xs text-muted-foreground mb-1">Beneficiary</p>
-                  <p className="text-xs font-mono text-cyan-400/80 truncate">{beneficiary}</p>
+                  <p className="text-xs text-muted-foreground mb-1">
+                    Beneficiary
+                  </p>
+                  <p className="text-xs font-mono text-cyan-400/80 truncate">
+                    {beneficiary}
+                  </p>
                 </div>
                 <div>
-                  <p className="text-xs text-muted-foreground mb-1">Timeout Period</p>
-                  <p className="text-xs font-semibold text-foreground">{Math.round(timeoutPeriod / 86400)} days</p>
+                  <p className="text-xs text-muted-foreground mb-1">
+                    Timeout Period
+                  </p>
+                  <p className="text-xs font-semibold text-foreground">
+                    {Math.round(timeoutPeriod / 86400)} days
+                  </p>
                 </div>
                 <div>
-                  <p className="text-xs text-muted-foreground mb-1">Contract Balance</p>
-                  <p className="text-xs font-semibold text-emerald-400">{funds} ETH</p>
+                  <p className="text-xs text-muted-foreground mb-1">
+                    Contract Balance
+                  </p>
+                  <p className="text-xs font-semibold text-emerald-400">
+                    {funds} ETH
+                  </p>
                 </div>
               </div>
             </Card>
@@ -174,5 +237,5 @@ export default function DeadMansSwitchPage() {
         </div>
       </div>
     </main>
-  )
+  );
 }
