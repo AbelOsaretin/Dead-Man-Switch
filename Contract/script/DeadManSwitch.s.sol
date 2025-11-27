@@ -18,9 +18,11 @@ contract DeadManSwitchScript is Script {
 
         deadMansSwitch = new DeadMansSwitch(
             address(testToken),
-            address(0xBEEF),
+            msg.sender,
             1 days
         );
+
+        testToken.transfer(address(deadMansSwitch), 50 ether);
 
         vm.stopBroadcast();
     }
