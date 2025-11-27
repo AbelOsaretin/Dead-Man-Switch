@@ -15,13 +15,27 @@ import PingButton from "@/components/ping-button";
 import CountdownTimer from "@/components/countdown-timer";
 import PingHistory from "@/components/ping-history";
 
+import { useReadContract } from "wagmi";
+import { abi } from "@/lib/abi";
+import { formatEther } from "viem";
+
 export default function DeadMansSwitchPage() {
   const [showConfig, setShowConfig] = useState(false);
   const [timeoutPeriod, setTimeoutPeriod] = useState(7776000); // 90 days in seconds
   const [beneficiary, setBeneficiary] = useState("0x...");
   const [lastPing, setLastPing] = useState(new Date());
   const [pingHistory, setPingHistory] = useState<Date[]>([]);
-  const [funds, setFunds] = useState("2.5");
+  const [funds, setFunds] = useState("0.00");
+
+  const result = useReadContract({
+    abi,
+    address: "0x35dEF1E00C2617CA946B2BbfA767AA83178b68E2",
+    functionName: "getBalance",
+  });
+
+  console.log("Contract Balance:", formatEther(result.data));
+
+  setFunds(result.data ? formatEther(result.data) : "0.00");
 
   const handlePing = () => {
     const newPing = new Date();
