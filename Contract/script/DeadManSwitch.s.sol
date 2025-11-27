@@ -27,3 +27,5 @@ contract DeadManSwitchScript is Script {
         vm.stopBroadcast();
     }
 }
+
+// forge script --chain sepolia script/DeadManSwitch.s.sol:DeadManSwitchScript --rpc-url $BASE_SEPOLIA_RPC_URL --broadcast --verify -vvvv --interactives 1
